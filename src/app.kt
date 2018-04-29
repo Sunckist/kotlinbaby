@@ -29,15 +29,17 @@ fun main(args: Array<String>) {
 
 
 
-
-
     products.forEach { p -> println(p) }
 
-    output(products)
+    val currencyGroups = products.groupBy { p -> p.currency }
+    currencyGroups.forEach { c ->
+        output(c.key, c.value)
+    }
+
 }
 
-fun output(products: List<Product>) {
-    File("output.csv").bufferedWriter().use { out ->
+fun output(currency: String, products: List<Product>) {
+    File(String.format("Products-%s.csv", currency)).bufferedWriter().use { out ->
         products.forEach { p ->
             val joiner = StringJoiner(";")
             joiner.add(p.productId)
