@@ -1,8 +1,9 @@
 import java.io.File
+import java.util.*
 
 fun main(args: Array<String>) {
 
-    val productsInputStream = File("/Users/magnus.lejonlid/dev/kotlinbaby/out/production/kotlinbaby/Products.txt").inputStream()
+    val productsInputStream = File("/Users/magnus.lejonlid/dev/private/kotlinbaby/out/production/kotlinbaby/Products.txt").inputStream()
     val products = mutableListOf<Product>()
 
     productsInputStream.bufferedReader().useLines { lines ->
@@ -12,7 +13,7 @@ fun main(args: Array<String>) {
         }
     }
 
-    val productsMetaInputStream = File("/Users/magnus.lejonlid/dev/kotlinbaby/out/production/kotlinbaby/ProductsMeta.txt").inputStream()
+    val productsMetaInputStream = File("/Users/magnus.lejonlid/dev/private/kotlinbaby/out/production/kotlinbaby/ProductsMeta.txt").inputStream()
     productsMetaInputStream.bufferedReader().useLines { lines ->
         lines.forEach { line ->
             val parts = line.split(";")
@@ -27,5 +28,29 @@ fun main(args: Array<String>) {
     }
 
 
+
+
+
     products.forEach { p -> println(p) }
+
+    output(products)
+}
+
+fun output(products: List<Product>) {
+    File("output.csv").bufferedWriter().use { out ->
+        products.forEach { p ->
+            val joiner = StringJoiner(";")
+            joiner.add(p.productId)
+            joiner.add(p.name)
+            joiner.add(p.partNo)
+            joiner.add(p.createdOn)
+            joiner.add(p.price)
+            joiner.add(p.weight)
+            joiner.add(p.material)
+            joiner.add(p.color)
+            joiner.add(p.leadTime)
+            joiner.add(p.leadTime)
+            out.write(joiner.toString())
+        }
+    }
 }
